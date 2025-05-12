@@ -1,0 +1,12 @@
+archive/
+options_wheel.egg-info
+__pycache__/
+Pipfile.lock
+
+# Mac stuff
+.DS_Store
+
+# VSCode settings
+.vscode/
+
+config/credentials.py
