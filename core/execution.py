@@ -2,16 +2,15 @@ from .strategy import *
 from models.contract import Contract
 import numpy as np
 
-def sell_puts(client, allowed_symbols):
+def sell_puts(client, allowed_symbols, buying_power):
     """
     Scan allowed symbols and sell short puts up to the buying power limit.
     """
-    buying_power = client.get_buying_power()
     if not allowed_symbols or buying_power <= 0:
         return
 
     print("Searching for put options...")
-    filtered_symbols = filter_underlying(client, allowed_symbols)
+    filtered_symbols = filter_underlying(client, allowed_symbols, buying_power)
     if len(filtered_symbols) == 0:
         print("No symbols found with sufficient buying power.")
         return

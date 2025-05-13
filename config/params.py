@@ -1,5 +1,5 @@
-# The max percentage of buying power to be used for the Wheel.
-BUYING_POWER_LIMIT = 0.25
+# The max dollar risk allowed by the strategy.  
+MAX_RISK = 80_000
 
 # The range of allowed Delta (absolute value) when choosing puts or calls to sell.  
 # The goal is to balance low assignment risk (lower Delta) with high premiums (higher Delta).
@@ -14,5 +14,5 @@ EXPIRATION_MAX = 21
 # Only trade contracts with at least this much open interest.
 OPEN_INTEREST_MIN = 100
 
-# The minimum score passed to core.strategy.select_options
+# The minimum score passed to core.strategy.select_options.
 SCORE_MIN = 0.05

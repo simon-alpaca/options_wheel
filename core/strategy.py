@@ -1,11 +1,9 @@
 from config.params import *
 
-def filter_underlying(client, symbols):
+def filter_underlying(client, symbols, buying_power_limit):
     """
     Filter underlying symbols based on buying power.  Can add custom logic such as volatility or ranging / support metrics.
     """
-    buying_power_limit = client.get_buying_power()
-
     resp = client.get_stock_latest_trade(symbols)
 
     filtered_symbols = [symbol for symbol in resp if 100*resp[symbol].price <= buying_power_limit]

@@ -41,12 +41,10 @@ class BrokerClient:
         self.trade_client.submit_order(req)
 
     def get_option_snapshot(self, symbol):
-        # If input is a single symbol (string), wrap in a list
         if isinstance(symbol, str):
             req = OptionSnapshotRequest(symbol_or_symbols=symbol)
             return self.option_client.get_option_snapshot(req)
 
-        # Otherwise, assume it's a list and batch in chunks of 100
         elif isinstance(symbol, list):
             all_results = {}
             for i in range(0, len(symbol), 100):
@@ -55,7 +53,6 @@ class BrokerClient:
                 result = self.option_client.get_option_snapshot(req)
                 all_results.update(result)
             
-            # You may want to flatten the list depending on the structure of result
             return all_results
 
 

@@ -1,6 +1,18 @@
 from .utils import parse_option_symbol
 from alpaca.trading.enums import AssetClass
 
+def calculate_risk(positions):
+    risk = 0
+    for p in positions:
+        if p.asset_class == AssetClass.US_EQUITY:
+            risk += float(p.avg_entry_price) * abs(int(p.qty))
+        elif p.asset_class == AssetClass.US_OPTION:
+            _, option_type, strike_price = parse_option_symbol(p.symbol)
+            if option_type == 'P':
+                risk += 100 * strike_price * abs(int(p.qty))
+
+    return risk
+
 def update_state(all_positions):    
     """
     Given the current positions, return a state dictionary describing where in the wheel each symbol is.
@@ -25,7 +37,7 @@ def update_state(all_positions):
             if int(p.qty) >= 0:
                 raise ValueError(f"Only short option positions allowed! Got {p.symbol} with qty {p.qty}")
 
-            underlying, option_type = parse_option_symbol(p.symbol)
+            underlying, option_type, _ = parse_option_symbol(p.symbol)
 
             if underlying in state:
                 if not (state[underlying]["type"] == "long_shares" and option_type == 'C'):
