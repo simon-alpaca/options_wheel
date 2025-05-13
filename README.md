@@ -80,6 +80,7 @@ run-strategy --fresh-start
 
 ### Notes
 
+* The **user agent** for API calls defaults to `OPTIONS-WHEEL` to help Alpaca track usage of runnable algos and improve user experience.  You can opt out by adjusting the `USER_AGENT` variable in `core/user_agent_mixin.py` — though we kindly hope you’ll keep it enabled to support ongoing improvements.  
 * **Account state matters**: This strategy assumes full control of the account — all positions are expected to be managed by this script. For best results, start with a clean account or one dedicated to this strategy.
 * **One contract per symbol**: To simplify risk management, this implementation trades only one contract at a time per symbol. You can modify this logic in `core/strategy` to suit more advanced use cases.
 * **Want to customize the strategy?** The `core/strategy` module is a great place to start exploring and modifying the logic.
