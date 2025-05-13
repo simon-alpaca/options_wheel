@@ -28,9 +28,6 @@ class BrokerClient:
         self.stock_client = StockHistoricalDataClientSigned(api_key=api_key, secret_key=secret_key)
         self.option_client = OptionHistoricalDataClientSigned(api_key=api_key, secret_key=secret_key)
 
-    def get_buying_power(self):
-        return float(self.trade_client.get_account().buying_power) * BUYING_POWER_LIMIT
-
     def get_positions(self):
         return self.trade_client.get_all_positions()
 
