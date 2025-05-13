@@ -1,5 +1,5 @@
 # The max percentage of buying power to be used for the Wheel.
-BUYING_POWER_LIMIT = 1
+BUYING_POWER_LIMIT = 0.25
 
 # The range of allowed Delta (absolute value) when choosing puts or calls to sell.  
 # The goal is to balance low assignment risk (lower Delta) with high premiums (higher Delta).
