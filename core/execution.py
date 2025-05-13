@@ -2,7 +2,7 @@ from .strategy import *
 from models.contract import Contract
 import numpy as np
 
-def fresh_start(client, allowed_symbols):
+def sell_puts(client, allowed_symbols):
     """
     Scan allowed symbols and sell short puts up to the buying power limit.
     """
@@ -12,7 +12,12 @@ def fresh_start(client, allowed_symbols):
 
     print("Searching for put options...")
     filtered_symbols = filter_underlying(client, allowed_symbols)
-    put_options = filter_options([Contract.from_contract(option, client) for option in client.get_options_contracts(filtered_symbols, 'put')])
+    if len(filtered_symbols) == 0:
+        print("No symbols found with sufficient buying power.")
+        return
+    option_contracts = client.get_options_contracts(filtered_symbols, 'put')
+    snapshots = client.get_option_snapshot([c.symbol for c in option_contracts])
+    put_options = filter_options([Contract.from_contract_snapshot(contract, snapshots.get(contract.symbol, None)) for contract in option_contracts])
     
     if put_options:
         print("Scoring put options...")
@@ -24,6 +29,8 @@ def fresh_start(client, allowed_symbols):
                 break
             print(f"Selling put: {p.symbol}")
             client.market_sell(p.symbol)
+    else:
+        print("No put options found with sufficient delta and open interest.")
 
 def sell_calls(client, symbol, purchase_price, stock_qty):
     """

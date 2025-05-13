@@ -50,15 +50,24 @@ This code helps pick the right puts and calls to sell, tracks your positions, an
 
 5. **Configure trading parameters:**
 
-   Adjust values in `config/params.py` to customize things like trade size, capital constraints, and target returns. Each parameter is documented in the file.
+   Adjust values in `config/params.py` to customize things buying power limits, options characteristics (greeks / expiry), and scoring thresholds. Each parameter is documented in the file.
 
-6. **Run the strategy:**
+### 6. **Run the strategy:**
 
-   ```bash
-   run-strategy
-   ```
+```bash
+run-strategy
+```
 
----
+By default, the script assumes your portfolio is empty or fully managed by this strategy.
+
+If you want to **liquidate all existing positions before running**, you can use the `--fresh-start` flag:
+
+```bash
+run-strategy --fresh-start
+```
+
+⚠️ **Warning:** This will immediately close **all open positions** in the account. Use this only on the **first run**.
+
 
 ### What the Script Does
 

@@ -27,7 +27,7 @@ class Contract:
     @classmethod
     def from_contract(cls, contract, client=None) -> "Contract":
         """
-        Create a StandardizedOptionContract from a raw OptionsContract.
+        Create a Contract object from a raw OptionsContract.
         """
         return cls(
             underlying = contract.underlying_symbol,
@@ -37,6 +37,27 @@ class Contract:
             dte = (contract.expiration_date - datetime.date.today()).days,
             strike = contract.strike_price,
             client = client
+        )
+    
+    @classmethod
+    def from_contract_snapshot(cls, contract, snapshot) -> "Contract":
+        """
+        Create a Contract object from a raw OptionContract and OptionSnapshot
+        """
+        if not snapshot:
+            raise ValueError(f"Snapshot data is required to create a Contract from a snapshot for symbol {contract.symbol}.")
+        
+        return cls(
+            underlying = contract.underlying_symbol,
+            symbol = contract.symbol,
+            contract_type = contract.type.title().lower(),
+            oi = float(contract.open_interest) if contract.open_interest is not None else None,
+            dte = (contract.expiration_date - datetime.date.today()).days,
+            strike = contract.strike_price,
+            delta = snapshot.greeks.delta if hasattr(snapshot, 'greeks') and snapshot.greeks else None,
+            bid_price = snapshot.latest_quote.bid_price if hasattr(snapshot, 'latest_quote') and snapshot.latest_quote else None,
+            ask_price = snapshot.latest_quote.ask_price if hasattr(snapshot, 'latest_quote') and snapshot.latest_quote else None,
+            last_price = snapshot.latest_trade.price if hasattr(snapshot, 'latest_trade') and snapshot.latest_trade else None
         )
     
     def update(self):

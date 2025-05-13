@@ -6,10 +6,11 @@ from alpaca.data.historical.option import OptionHistoricalDataClient
 from alpaca.data.historical.stock import StockHistoricalDataClient, StockLatestTradeRequest
 from alpaca.data.requests import OptionSnapshotRequest
 from alpaca.trading.requests import GetOptionContractsRequest, MarketOrderRequest
-from alpaca.trading.enums import ContractType, AssetStatus
+from alpaca.trading.enums import ContractType, AssetStatus, AssetClass
 from datetime import timedelta
 from zoneinfo import ZoneInfo
 import datetime
+from tqdm import tqdm
 
 class TradingClientSigned(UserAgentMixin, TradingClient):
     pass
@@ -40,8 +41,26 @@ class BrokerClient:
         self.trade_client.submit_order(req)
 
     def get_option_snapshot(self, symbol):
-        req = OptionSnapshotRequest(symbol_or_symbols=symbol)
-        return self.option_client.get_option_snapshot(req)
+        # If input is a single symbol (string), wrap in a list
+        if isinstance(symbol, str):
+            req = OptionSnapshotRequest(symbol_or_symbols=symbol)
+            return self.option_client.get_option_snapshot(req)
+
+        # Otherwise, assume it's a list and batch in chunks of 100
+        elif isinstance(symbol, list):
+            all_results = {}
+            for i in range(0, len(symbol), 100):
+                batch = symbol[i:i+100]
+                req = OptionSnapshotRequest(symbol_or_symbols=batch)
+                result = self.option_client.get_option_snapshot(req)
+                all_results.update(result)
+            
+            # You may want to flatten the list depending on the structure of result
+            return all_results
+
+
+        else:
+            raise ValueError("Input must be a string or list of strings representing symbols.")
 
     def get_stock_latest_trade(self, symbol):
         req = StockLatestTradeRequest(symbol_or_symbols=symbol)
@@ -81,5 +100,16 @@ class BrokerClient:
                 break
 
         return all_contracts
+    
+    def liquidate_all_positions(self):
+        positions = self.get_positions()
+        to_liquidate = []
+        for p in positions:
+            if p.asset_class == AssetClass.US_OPTION:
+                self.trade_client.close_position(p.symbol)
+            else:
+                to_liquidate.append(p)
+        for p in to_liquidate:
+            self.trade_client.close_position(p.symbol)
 
 
