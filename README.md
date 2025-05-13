@@ -26,7 +26,7 @@ This code helps pick the right puts and calls to sell, tracks your positions, an
    ```bash
    git clone https://github.com/simon-alpaca/options_wheel.git
    cd options_wheel
-````
+   ```
 
 2. **Install the required packages:**
 
