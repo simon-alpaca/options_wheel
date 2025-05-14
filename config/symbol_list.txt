@@ -6,3 +6,5 @@ DLR
 MP
 NVDA
 PLTR
+AAL
+V

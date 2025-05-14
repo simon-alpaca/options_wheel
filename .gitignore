@@ -1,4 +1,5 @@
 archive/
+logs/
 options_wheel.egg-info
 __pycache__/
 Pipfile.lock

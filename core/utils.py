@@ -1,4 +1,6 @@
 import re
+import pytz
+from datetime import datetime
 
 def parse_option_symbol(symbol):
     """
@@ -17,3 +19,8 @@ def parse_option_symbol(symbol):
         return underlying, option_type, strike_price
     else:
         raise ValueError(f"Invalid option symbol format: {symbol}")
+
+def get_ny_timestamp():
+    ny_tz = pytz.timezone("America/New_York")
+    ny_time = datetime.now(ny_tz)
+    return ny_time.isoformat()

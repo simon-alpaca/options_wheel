@@ -50,7 +50,7 @@ This code helps pick the right puts and calls to sell, tracks your positions, an
 
 5. **Configure trading parameters:**
 
-   Adjust values in `config/params.py` to customize things buying power limits, options characteristics (greeks / expiry), and scoring thresholds. Each parameter is documented in the file.
+   Adjust values in `config/params.py` to customize things like buying power limits, options characteristics (greeks / expiry), and scoring thresholds. Each parameter is documented in the file.
 
 ### 6. **Run the strategy:**
 
@@ -80,10 +80,10 @@ run-strategy --fresh-start
 
 ### Notes
 
+* **Account state matters**: This strategy assumes full control of the account — all positions are expected to be managed by this script. For best results, start with a clean account (e.g. by using the `--fresh-start` flag).
+* **One contract per symbol**: To simplify risk management, this implementation trades only one contract at a time per symbol. You can modify this logic in `core/strategy.py` to suit more advanced use cases.
 * The **user agent** for API calls defaults to `OPTIONS-WHEEL` to help Alpaca track usage of runnable algos and improve user experience.  You can opt out by adjusting the `USER_AGENT` variable in `core/user_agent_mixin.py` — though we kindly hope you’ll keep it enabled to support ongoing improvements.  
-* **Account state matters**: This strategy assumes full control of the account — all positions are expected to be managed by this script. For best results, start with a clean account or one dedicated to this strategy.
-* **One contract per symbol**: To simplify risk management, this implementation trades only one contract at a time per symbol. You can modify this logic in `core/strategy` to suit more advanced use cases.
-* **Want to customize the strategy?** The `core/strategy` module is a great place to start exploring and modifying the logic.
+* **Want to customize the strategy?** The `core/strategy.py` module is a great place to start exploring and modifying the logic.
 
 ---
 
@@ -139,7 +139,7 @@ Some early backtests:
 
 ---
 
-## What You May Want to Customize / Improve
+## Ideas for Customization
 
 ### Stock Picking
 

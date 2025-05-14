@@ -14,5 +14,5 @@ EXPIRATION_MAX = 21
 # Only trade contracts with at least this much open interest.
 OPEN_INTEREST_MIN = 100
 
-# The minimum score passed to core.strategy.select_options.
+# The minimum score passed to core.strategy.select_options().
 SCORE_MIN = 0.05

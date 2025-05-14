@@ -2,6 +2,9 @@ from typing import Optional
 from dataclasses import dataclass, field
 import datetime
 from core.broker_client import BrokerClient
+from core.utils import get_ny_timestamp
+import json
+
 
 @dataclass
 class Contract:
@@ -60,6 +63,10 @@ class Contract:
             last_price = snapshot.latest_trade.price if hasattr(snapshot, 'latest_trade') and snapshot.latest_trade else None
         )
     
+    @classmethod
+    def from_dict(cls, data: dict) -> "Contract":
+        return cls(**data)
+    
     def update(self):
         """
         Fetches and updates the contract's bid, ask, delta, and other market data.
@@ -85,3 +92,33 @@ class Contract:
         #     data = underlying_latest_trade[self.underlying]
         #     if hasattr(data, 'price'):
         #         self.underlying_price = data.price
+
+    def to_dict(self):
+        return {
+            "underlying": self.underlying,
+            "symbol": self.symbol,
+            "contract_type": self.contract_type,
+            "dte": self.dte,
+            "strike": self.strike,
+            "delta": self.delta,
+            "bid_price": self.bid_price,
+            "ask_price": self.ask_price,
+            "last_price": self.last_price,
+            "oi": self.oi,
+            "underlying_price": self.underlying_price,
+        }
+    
+    @staticmethod
+    def save_to_json(contracts: list["Contract"], filepath: str):
+        payload = {
+            "timestamp": get_ny_timestamp(),
+            "contracts": [c.to_dict() for c in contracts]
+        }
+        with open(filepath, "w") as f:
+            json.dump(payload, f, indent=2)
+    
+    @staticmethod
+    def load_from_json(filepath: str):
+        with open(filepath, "r") as f:
+            payload = json.load(f)
+        return [Contract.from_dict(d) for d in payload["contracts"]]
