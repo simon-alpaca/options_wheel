@@ -62,42 +62,42 @@ This code helps pick the right puts and calls to sell, tracks your positions, an
    Adjust values in `config/params.py` to customize things like buying power limits, options characteristics (e.g., greeks / expiry), and scoring thresholds. Each parameter is documented in the file.
 
 
-### 7. **Run the strategy**
+7. **Run the strategy**
 
-Run the strategy (which assumes an empty or fully managed portfolio):
-
-```bash
-run-strategy
-```
-
-> **Tip:** On your first run, use `--fresh-start` to liquidate all existing positions and start clean.
-
-There are two types of logging:
-
-* **Strategy JSON logging** (`--strat-log`):
-  Always saves detailed JSON files to disk for analyzing strategy performance.
-
-* **Runtime logging** (`--log-level` and `--log-to-file`):
-  Controls console/file logs for monitoring the current run. Optional and configurable.
-
-**Flags:**
-
-* `--fresh-start` — Liquidate all positions before running (recommended first run).
-* `--strat-log` — Enable strategy JSON logging (always saved to disk).
-* `--log-level LEVEL` — Set runtime logging verbosity (default: INFO).
-* `--log-to-file` — Save runtime logs to file instead of console.
-
-Example:
-
-```bash
-run-strategy --fresh-start --strat-log --log-level DEBUG --log-to-file
-```
-
-For more info:
-
-```bash
-run-strategy --help
-```
+   Run the strategy (which assumes an empty or fully managed portfolio):
+   
+   ```bash
+   run-strategy
+   ```
+   
+   > **Tip:** On your first run, use `--fresh-start` to liquidate all existing positions and start clean.
+   
+   There are two types of logging:
+   
+   * **Strategy JSON logging** (`--strat-log`):
+     Always saves detailed JSON files to disk for analyzing strategy performance.
+   
+   * **Runtime logging** (`--log-level` and `--log-to-file`):
+     Controls console/file logs for monitoring the current run. Optional and configurable.
+   
+   **Flags:**
+   
+   * `--fresh-start` — Liquidate all positions before running (recommended first run).
+   * `--strat-log` — Enable strategy JSON logging (always saved to disk).
+   * `--log-level LEVEL` — Set runtime logging verbosity (default: INFO).
+   * `--log-to-file` — Save runtime logs to file instead of console.
+   
+   Example:
+   
+   ```bash
+   run-strategy --fresh-start --strat-log --log-level DEBUG --log-to-file
+   ```
+   
+   For more info:
+   
+   ```bash
+   run-strategy --help
+   ```
 
 ---
 
