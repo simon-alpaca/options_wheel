@@ -171,37 +171,64 @@ Some early backtests:
 
 ---
 
+## Core Strategy Logic
+
+* **Stock Filtering:**
+  The strategy filters underlying stocks based on available buying power. It fetches the latest trade prices for each candidate symbol and retains only those where the cost to buy 100 shares (`price × 100`) is within your buying power limit. This keeps trades within capital constraints and can be extended to include custom filters like volatility or technical indicators.
+
+* **Option Filtering:**
+  Put options are filtered by absolute delta, which must lie between `DELTA_MIN` and `DELTA_MAX`, and by open interest (`OPEN_INTEREST_MIN`) to ensure liquidity. For short calls, the strategy applies a minimum strike price filter (`min_strike`) to ensure the strike is above the underlying purchase price. This helps avoid immediate assignment and guarantees profit if the call is assigned.
+
+* **Option Scoring:**
+  Options are scored to estimate their attractiveness based on annualized return, adjusted for assignment risk. The score formula is:
+
+  $$
+  \text{score} = (1 - |\Delta|) \times \frac{250}{\text{DTE} + 5} \times \frac{\text{bid price}}{\text{strike price}}
+  $$
+
+  Where:
+
+  * $\Delta$ = option delta (a rough proxy for the probability of assignment)
+  * DTE = days to expiration
+  * The factor 250 approximates the number of trading days in a year
+  * Adding 5 days to DTE smooths the score for near-term options
+
+* **Option Selection:**
+  From all scored options, the strategy picks the highest-scoring contract per underlying symbol to promote diversification. It filters out options scoring below `SCORE_MIN` and returns either the top N options or all qualifying options.
+
+---
+
 ## Ideas for Customization
 
 ### Stock Picking
 
-* Use resistance levels, moving averages, RSI, etc. to identify stocks that are likely to stay range bound (ideal for the Wheel).
-* Filter stocks based on earnings growth, dividend history, volatility, or whatever you like to find companies that you would be comfortable holding long term. 
+* Use technical indicators such as moving averages, RSI, or support/resistance levels to identify stocks likely to remain range-bound — ideal for selling options in the Wheel strategy.
+* Incorporate fundamental filters like earnings growth, dividend history, or volatility to select stocks you’re comfortable holding long term.
 
 ### Scoring Function for Puts / Calls
 
-* Tweak the way options are ranked.
-* You might want separate logic for puts vs calls (different things matter, for example you might want to weight calls more heavily that are just below resistance levels).
+* Modify the scoring formula to weight factors differently or separately for puts vs calls. For example, emphasize calls with strikes just below resistance levels or puts on stocks with strong support.
+* Consider adding factors like implied volatility or premium decay to better capture option pricing nuances.
 
 ### Managing a Larger Portfolio
 
-* Weight bigger trades toward higher-scoring opportunities.
-* Allow multiple wheels on the same stock.
-* Set limits to avoid overexposure.
+* Allocate larger trade sizes to higher-scoring options for more efficient capital use.
+* Allow multiple wheels per stock to increase position flexibility.
+* Set exposure limits per underlying or sector to manage risk.
 
 ### Stop Loss When Puts Get Assigned
 
-* Add logic to cut losses if a stock tanks after you're assigned.
+* Implement logic to cut losses if a stock price falls sharply after assignment, protecting capital from downside.
 
 ### Rolling Short Puts as Expiration Nears
 
-* Instead of letting puts expire or get assigned immediately, you could roll them to the next expiration to collect more premium.
-* (See [this Learn article](https://alpaca.markets/learn/options-wheel-strategy) about rolling options for more.)
+* Instead of letting puts expire or get assigned, roll them forward to the next expiration or down to lower strikes to capture additional premium and manage risk.
+* (For more, see [this Learn article](https://alpaca.markets/learn/options-wheel-strategy).)
 
 ---
 
 ## Final Notes
 
-This is a great starting point for automating your trading, but always double-check your live trades. No system is 100% hands-off yet.
+This is a great starting point for automating your trading, but always double-check your live trades — no system is completely hands-off.
 
 Happy wheeling! 🚀
