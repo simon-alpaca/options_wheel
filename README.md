@@ -28,46 +28,78 @@ This code helps pick the right puts and calls to sell, tracks your positions, an
    cd options_wheel
    ```
 
-2. **Install the required packages:**
+2. **Create a virtual environment using [`uv`](https://github.com/astral-sh/uv):**
 
    ```bash
-   pip install -e .
+   uv venv
+   source .venv/bin/activate  # Or `.venv\Scripts\activate` on Windows
    ```
 
-3. **Set up your API credentials:**
+3. **Install the required packages:**
 
-   Create a file named `credentials.py` inside the `config/` folder with the following content:
-
-   ```python
-   ALPACA_API_KEY = 'YOUR_PUBLIC_KEY'
-   ALPACA_SECRET_KEY = 'YOUR_PRIVATE_KEY'
-   IS_PAPER = True  # Set to False if using a live account
+   ```bash
+   uv pip install -e .
    ```
 
-4. **Choose your symbols:**
+4. **Set up your API credentials:**
+
+   Create a `.env` file in the project root with the following content:
+
+   ```env
+   ALPACA_API_KEY=your_public_key
+   ALPACA_SECRET_KEY=your_private_key
+   IS_PAPER=true  # Set to false if using a live account
+   ```
+
+   Your credentials will be loaded from `.env` automatically.
+
+5. **Choose your symbols:**
 
    The strategy trades only the symbols listed in `config/symbol_list.txt`. Edit this file to include the tickers you want to run the Wheel strategy on — one symbol per line. Choose stocks you'd be comfortable holding long-term.
 
-5. **Configure trading parameters:**
+6. **Configure trading parameters:**
 
-   Adjust values in `config/params.py` to customize things like buying power limits, options characteristics (greeks / expiry), and scoring thresholds. Each parameter is documented in the file.
+   Adjust values in `config/params.py` to customize things like buying power limits, options characteristics (e.g., greeks / expiry), and scoring thresholds. Each parameter is documented in the file.
 
-### 6. **Run the strategy:**
+
+### 7. **Run the strategy**
+
+Run the strategy (which assumes an empty or fully managed portfolio):
 
 ```bash
 run-strategy
 ```
 
-By default, the script assumes your portfolio is empty or fully managed by this strategy.
+> **Tip:** On your first run, use `--fresh-start` to liquidate all existing positions and start clean.
 
-If you want to **liquidate all existing positions before running**, you can use the `--fresh-start` flag:
+There are two types of logging:
+
+* **Strategy JSON logging** (`--strat-log`):
+  Always saves detailed JSON files to disk for analyzing strategy performance.
+
+* **Runtime logging** (`--log-level` and `--log-to-file`):
+  Controls console/file logs for monitoring the current run. Optional and configurable.
+
+**Flags:**
+
+* `--fresh-start` — Liquidate all positions before running (recommended first run).
+* `--strat-log` — Enable strategy JSON logging (always saved to disk).
+* `--log-level LEVEL` — Set runtime logging verbosity (default: INFO).
+* `--log-to-file` — Save runtime logs to file instead of console.
+
+Example:
 
 ```bash
-run-strategy --fresh-start
+run-strategy --fresh-start --strat-log --log-level DEBUG --log-to-file
 ```
 
-⚠️ **Warning:** This will immediately close **all open positions** in the account. Use this only on the **first run**.
+For more info:
 
+```bash
+run-strategy --help
+```
+
+---
 
 ### What the Script Does
 

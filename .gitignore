@@ -2,12 +2,14 @@ archive/
 logs/
 options_wheel.egg-info
 __pycache__/
-Pipfile.lock
+
+.venv/
+/venv
+/env
+.env
 
 # Mac stuff
 .DS_Store
 
 # VSCode settings
 .vscode/
-
-config/credentials.py

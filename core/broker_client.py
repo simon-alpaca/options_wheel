@@ -9,7 +9,6 @@ from alpaca.trading.enums import ContractType, AssetStatus, AssetClass
 from datetime import timedelta
 from zoneinfo import ZoneInfo
 import datetime
-from tqdm import tqdm
 
 class TradingClientSigned(UserAgentMixin, TradingClient):
     pass
