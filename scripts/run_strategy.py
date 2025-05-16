@@ -12,7 +12,7 @@ def main():
     args = parse_args()
     
     # Initialize two separate loggers
-    strat_logger = StrategyLogger(enabled=args.log)  # custom JSON logger used to persist strategy-specific state (e.g. trades, symbols, PnL).
+    strat_logger = StrategyLogger(enabled=args.strat_log)  # custom JSON logger used to persist strategy-specific state (e.g. trades, symbols, PnL).
     logger = setup_logger(level=args.log_level, to_file=args.log_to_file) # standard Python logger used for general runtime messages, debugging, and error reporting.
 
     strat_logger.set_fresh_start(args.fresh_start)
