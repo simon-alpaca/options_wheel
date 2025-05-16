@@ -173,6 +173,8 @@ Some early backtests:
 
 ## Core Strategy Logic
 
+The core logic is defined in `core/strategy.py`.
+
 * **Stock Filtering:**
   The strategy filters underlying stocks based on available buying power. It fetches the latest trade prices for each candidate symbol and retains only those where the cost to buy 100 shares (`price × 100`) is within your buying power limit. This keeps trades within capital constraints and can be extended to include custom filters like volatility or technical indicators.
 
@@ -182,9 +184,7 @@ Some early backtests:
 * **Option Scoring:**
   Options are scored to estimate their attractiveness based on annualized return, adjusted for assignment risk. The score formula is:
 
-  $$
-  \text{score} = (1 - |\Delta|) \times \frac{250}{\text{DTE} + 5} \times \frac{\text{bid price}}{\text{strike price}}
-  $$
+   `score = (1 - |Δ|) × (250 / (DTE + 5)) × (bid price / strike price)`
 
   Where:
 
