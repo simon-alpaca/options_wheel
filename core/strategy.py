@@ -1,4 +1,4 @@
-from config.params import *
+from config.params import DELTA_MIN, DELTA_MAX, OPEN_INTEREST_MIN, SCORE_MIN
 
 def filter_underlying(client, symbols, buying_power_limit):
     """

@@ -1,5 +1,4 @@
-from config.credentials import *
-from config.params import *
+from config.params import EXPIRATION_MIN, EXPIRATION_MAX
 from .user_agent_mixin import UserAgentMixin 
 from alpaca.trading.client import TradingClient
 from alpaca.data.historical.option import OptionHistoricalDataClient
