@@ -20,7 +20,7 @@ def sell_puts(client, allowed_symbols, buying_power, strat_logger = None):
         return
     option_contracts = client.get_options_contracts(filtered_symbols, 'put')
     snapshots = client.get_option_snapshot([c.symbol for c in option_contracts])
-    put_options = filter_options([Contract.from_contract_snapshot(contract, snapshots.get(contract.symbol, None)) for contract in option_contracts])
+    put_options = filter_options([Contract.from_contract_snapshot(contract, snapshots.get(contract.symbol, None)) for contract in option_contracts if snapshots.get(contract.symbol, None)])
     if strat_logger:
         strat_logger.log_put_options([p.to_dict() for p in put_options])
     
