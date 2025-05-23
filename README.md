@@ -1,5 +1,5 @@
 # Automated Wheel Strategy
-
+ 
 Welcome to the Wheel Strategy automation project!
 This script is designed to help you trade the classic ["wheel" options strategy](https://alpaca.markets/learn/options-wheel-strategy) with as little manual work as possible.
 
