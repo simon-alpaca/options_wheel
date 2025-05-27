@@ -6,6 +6,10 @@ MAX_RISK = 80_000
 DELTA_MIN = 0.15 
 DELTA_MAX = 0.30
 
+# The range of allowed yield when choosing puts or calls to sell.
+YIELD_MIN = 0.04
+YIELD_MAX = 1.00
+
 # The range of allowed days till expiry when choosing puts or calls to sell.
 # The goal is to balance shorter expiry for consistent income generation with longer expiry for time value premium.
 EXPIRATION_MIN = 0

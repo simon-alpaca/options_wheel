@@ -1,4 +1,4 @@
-from config.params import DELTA_MIN, DELTA_MAX, OPEN_INTEREST_MIN, SCORE_MIN
+from config.params import DELTA_MIN, DELTA_MAX, YIELD_MIN, YIELD_MAX, OPEN_INTEREST_MIN, SCORE_MIN
 
 def filter_underlying(client, symbols, buying_power_limit):
     """
@@ -17,7 +17,9 @@ def filter_options(options, min_strike = 0):
     filtered_contracts = [contract for contract in options 
                           if contract.delta 
                           and abs(contract.delta) > DELTA_MIN 
-                          and abs(contract.delta) < DELTA_MAX 
+                          and abs(contract.delta) < DELTA_MAX
+                          and (contract.bid_price / contract.strike_price) * (365 / (contract.dte + 1)) > YIELD_MIN
+                          and (contract.bid_price / contract.strike_price) * (365 / (contract.dte + 1)) < YIELD_MAX
                           and contract.oi 
                           and contract.oi > OPEN_INTEREST_MIN
                           and contract.strike >= min_strike]

@@ -179,7 +179,7 @@ The core logic is defined in `core/strategy.py`.
   The strategy filters underlying stocks based on available buying power. It fetches the latest trade prices for each candidate symbol and retains only those where the cost to buy 100 shares (`price × 100`) is within your buying power limit. This keeps trades within capital constraints and can be extended to include custom filters like volatility or technical indicators.
 
 * **Option Filtering:**
-  Put options are filtered by absolute delta, which must lie between `DELTA_MIN` and `DELTA_MAX`, and by open interest (`OPEN_INTEREST_MIN`) to ensure liquidity. For short calls, the strategy applies a minimum strike price filter (`min_strike`) to ensure the strike is above the underlying purchase price. This helps avoid immediate assignment and guarantees profit if the call is assigned.
+  Put options are filtered by absolute delta, which must lie between `DELTA_MIN` and `DELTA_MAX`, by open interest (`OPEN_INTEREST_MIN`) to ensure liquidity, and by yield (between `YIELD_MIN` and `YIELD_MAX`). For short calls, the strategy applies a minimum strike price filter (`min_strike`) to ensure the strike is above the underlying purchase price. This helps avoid immediate assignment and locks in profit if the call is assigned.
 
 * **Option Scoring:**
   Options are scored to estimate their attractiveness based on annualized return, adjusted for assignment risk. The score formula is:
