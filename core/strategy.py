@@ -18,8 +18,8 @@ def filter_options(options, min_strike = 0):
                           if contract.delta 
                           and abs(contract.delta) > DELTA_MIN 
                           and abs(contract.delta) < DELTA_MAX
-                          and (contract.bid_price / contract.strike_price) * (365 / (contract.dte + 1)) > YIELD_MIN
-                          and (contract.bid_price / contract.strike_price) * (365 / (contract.dte + 1)) < YIELD_MAX
+                          and (contract.bid_price / contract.strike) * (365 / (contract.dte + 1)) > YIELD_MIN
+                          and (contract.bid_price / contract.strike) * (365 / (contract.dte + 1)) < YIELD_MAX
                           and contract.oi 
                           and contract.oi > OPEN_INTEREST_MIN
                           and contract.strike >= min_strike]
